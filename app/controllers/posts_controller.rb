@@ -3,7 +3,14 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, only:[:new,:create]
 # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    if(user_signed_in?)
+      @posts = Post.all
+    else
+      @posts = Post.all
+      @posts.each do |post|
+        post[:user_id] = nil
+      end
+    end
   end
 
   # GET /posts/1 or /posts/1.json
